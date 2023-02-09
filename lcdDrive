@@ -1,0 +1,136 @@
+import board
+import busio
+import time
+import adafruit_character_lcd.character_lcd_rgb_i2c as character_lcd
+lcd_columns = 16
+lcd_rows = 2
+i2c = busio.I2C(board.SCL, board.SDA)
+lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows)
+
+
+##intro sequence
+lcd.clear()
+lcd.color = [100,0,0]
+lcd.message = "Hello\nJordan"
+time.sleep(3)
+lcd.clear()
+lcd.message = "System\nInitiating"
+time.sleep(0.5)
+lcd.clear()
+lcd.color = [50,0,50]
+time.sleep(0.2)
+lcd.color = [100,0,0]
+time.sleep(0.2)
+lcd.color = [50,0,50]
+time.sleep(0.2)
+lcd.color = [100,0,0]
+time.sleep(0.2)
+lcd.color = [50,0,50]
+time.sleep(0.2)
+lcd.color = [100,0,0]
+time.sleep(1)
+
+
+menulevel=2
+import sys
+while True:
+#Hepa & lighting level
+    if menulevel==2:
+        lcd.message = "HEPA & Lighting"
+        if lcd.down_button:
+            menulevel=3
+            lcd.clear()
+            continue
+        elif lcd.select_button:
+            menulevel=21
+            lcd.clear()
+            continue
+#Hepa off level
+    elif menulevel==21:
+        lcd.message = "OFF\non"
+        if lcd.down_button:
+            menulevel=22
+            lcd.clear()
+            continue
+        elif lcd.select_button:
+            menulevel=2
+            lcd.clear()
+            continue
+#Hepa on level    
+    elif menulevel==22:
+        lcd.message = "off\nON"
+        if lcd.select_button:
+            menulevel=2
+            lcd.clear()
+            continue
+        elif lcd.up_button:
+            menulevel=21
+            lcd.clear()
+            continue
+#UV level    
+    elif menulevel==3:
+        lcd.message = "Ultraviolet"
+        if lcd.down_button:
+            menulevel=4
+            lcd.clear()
+            continue
+        elif lcd.up_button:
+            menulevel=2
+            lcd.clear()
+            continue
+        elif lcd.select_button:
+            menulevel=31
+            lcd.clear()
+            continue
+#UV off level
+    elif menulevel==31:
+        lcd.message = "OFF\non"
+        if lcd.down_button:
+            menulevel=32
+            lcd.clear()
+            continue
+        elif lcd.select_button:
+            menulevel=3
+            lcd.clear()
+            continue
+#UV on level
+    elif menulevel==32:
+        lcd.message = "off\nON"
+        if lcd.select_button:
+            menulevel=3
+            lcd.clear()
+            time.sleep(5)
+            continue
+        if lcd.up_button:
+            menulevel=31
+            lcd.clear()
+            continue
+#Halt level    
+    elif menulevel==4:
+        lcd.message = "Halt all\ncomponents"
+        if lcd.down_button:
+            menulevel=5
+            lcd.clear()
+            continue
+        elif lcd.up_button:
+            menulevel=3
+            lcd.clear()
+            continue
+        elif lcd.select_button:
+            lcd.clear()
+            lcd.message = "Halting"
+            time.sleep(3)
+            menulevel=4
+            continue
+#Shutdown level    
+    elif menulevel==5:
+        lcd.message = "Shutdown"
+        if lcd.up_button:
+            menulevel=4
+            lcd.clear()
+        elif lcd.select_button:
+            lcd.message = "Goodbye"
+        
+        ##add below if wanting to exit program
+        ##sys.exit()
+ 
